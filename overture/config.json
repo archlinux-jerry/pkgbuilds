@@ -1,0 +1,69 @@
+{
+  "BindAddress": ":53",
+  "PrimaryDNS": [
+    {
+      "Name": "114DNS",
+      "Address": "114.114.114.114:53",
+      "Protocol": "udp",
+      "SOCKS5Address": "",
+      "Timeout": 5,
+      "EDNSClientSubnet": {
+        "Policy": "disable",
+        "ExternalIP": "",
+	"NoCookie": true
+      }
+    },
+    {
+      "Name": "Google DNS",
+      "Address": "8.8.8.8:53",
+      "Protocol": "udp",
+      "SOCKS5Address": "",
+      "Timeout": 5,
+      "EDNSClientSubnet": {
+        "Policy": "disable",
+        "ExternalIP": "",
+	"NoCookie": true
+      }
+    }
+  ],
+  "AlternativeDNS": [
+    {
+      "Name": "Google DNS",
+      "Address": "8.8.8.8:53",
+      "Protocol": "tcp",
+      "SOCKS5Address": "",
+      "Timeout": 5,
+      "EDNSClientSubnet": {
+        "Policy": "disable",
+        "ExternalIP": ""
+      }
+    },
+    {
+      "Name": "OpenDNS",
+      "Address": "208.67.222.222:443",
+      "Protocol": "tcp",
+      "SOCKS5Address": "",
+      "Timeout": 5,
+      "EDNSClientSubnet":{
+        "Policy": "disable",
+        "ExternalIP": ""
+      }
+    }
+  ],
+  "OnlyPrimaryDNS": false,
+  "IPv6UseAlternativeDNS": false,
+  "WhenPrimaryDNSAnswerNoneUse": "PrimaryDNS",
+  "IPNetworkFile": {
+	  "Primary": "/etc/overture/china_ip_list.txt",
+	  "Alternative": ""
+  },
+  "DomainFile": {
+	  "Primary": "",
+	  "Alternative": "/etc/overture/gfwlist.txt"
+  },
+  "HostsFile": "/etc/overture/hosts",
+  "MinimumTTL": 0,
+  "DomainTTLFile": "/etc/overture/domain_ttl.txt",
+  "CacheSize": 4096,
+  "RejectQtype": [255]
+}
