@@ -1,0 +1,19 @@
+# Archlinux-Jerry PGP keyring
+# Maintainer: Jerry Xiao <isjerryxiao at outlook dot com>
+
+pkgname=jerryxiao-keyring
+pkgver=20190127
+pkgrel=1
+pkgdesc='Archlinux-Jerry PGP keyring'
+arch=('any')
+url='https://github.com/archlinux-jerry/archlinux-jerry-keyring'
+license=('GPL')
+install="${pkgname}.install"
+makedepends=("git")
+source=(${pkgname}::"git+https://github.com/archlinux-jerry/archlinux-jerry-keyring.git")
+sha256sums=('SKIP')
+
+package() {
+  cd "${srcdir}/${pkgname}"
+  make PREFIX=/usr DESTDIR=${pkgdir} install
+}
