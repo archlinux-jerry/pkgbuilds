@@ -98,7 +98,7 @@ _package() {
   make INSTALL_MOD_PATH="${pkgdir}" modules_install
   make INSTALL_DTBS_PATH="${pkgdir}/boot/dtbs" dtbs_install
   cp arch/$KARCH/boot/Image "${pkgdir}/boot/zImage"
-  cp ${pkgdir}/boot/dtbs/amlogic/meson-gxl-s905d-p230.dtb "${pkgdir}/boot/dtb.img"
+  cp ${pkgdir}/boot/dtbs/amlogic/meson-gxl-s905d-phicomm-n1.dtb "${pkgdir}/boot/dtb.img"
 
   # set correct depmod command for install
   sed \
