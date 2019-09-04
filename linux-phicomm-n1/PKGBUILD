@@ -8,7 +8,7 @@ _srcname=linux-5.2
 _kernelname=${pkgbase#linux}
 _desc="AArch64 kernel for Phicomm N1"
 pkgver=5.2.11
-pkgrel=2
+pkgrel=3
 arch=('aarch64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -22,6 +22,7 @@ source=("http://www.kernel.org/pub/linux/kernel/v5.x/${_srcname}.tar.xz"
         '0003-arm64-dts-rockchip-add-usb3-controller-node-for-RK33.patch'
         '0004-arm64-dts-rockchip-enable-usb3-nodes-on-rk3328-rock6.patch'
         '0005-watchdog-bcm2835_wdt-Fix-module-autoload.patch'
+        'meson-gxl-s905d-phicomm-n1.dts'
         'config'
         'linux.preset'
         '60-linux.hook'
@@ -33,6 +34,7 @@ md5sums=('ddf994de00d7b18395886dd9b30b9262'
          '9986e28b5c2c3c62a5c3bb53abd94640'
          '552ea82c3a5e14ca9149da8c4b4d5a82'
          '79a9339191904f10f5659eea9cf51a6c'
+         'caa2dbc19116d818e6d0d46baeca961b'
          'aa697ec98d7e2016a85fb4c237559794'
          '66e0ae63183426b28c0ec0c7e10b5e16'
          'ce6c81ad1ad1f8b333fd6077d47abdaf'
