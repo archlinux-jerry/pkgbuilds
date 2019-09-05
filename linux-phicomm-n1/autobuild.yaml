@@ -2,3 +2,6 @@ type:
     auto
 timeout:
     720
+extra:
+    - update:
+        - rm -rf 'src'
