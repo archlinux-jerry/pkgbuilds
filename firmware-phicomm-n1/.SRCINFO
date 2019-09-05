@@ -1,0 +1,17 @@
+pkgbase = firmware-phicomm-n1
+	pkgdesc = Additional firmware for Phicomm N1
+	pkgver = 6
+	pkgrel = 2
+	url = https://github.com/RPi-Distro
+	arch = any
+	license = custom
+	options = !strip
+	source = https://raw.githubusercontent.com/RPi-Distro/firmware-nonfree/130cb86fa30cafbd575d38865fa546350d4c5f9c/brcm/brcmfmac43455-sdio.clm_blob
+	source = https://raw.githubusercontent.com/RPi-Distro/firmware-nonfree/130cb86fa30cafbd575d38865fa546350d4c5f9c/brcm/brcmfmac43455-sdio.txt
+	source = https://raw.githubusercontent.com/RPi-Distro/bluez-firmware/96eefffcccc725425fd83be5e0704a5c32b79e54/broadcom/BCM4345C0.hcd
+	sha256sums = 8e2250518bc789e53109728c3c0a6124bc3801a75a1cb4966125753cf1f0252e
+	sha256sums = bddee0eff55a11e939e000ad341c951c7ee67758fc26b838b0472792aed33639
+	sha256sums = d09ce049f65619f007d604069d2b4d2a3ffe3cf897245287ef379955ce3969de
+
+pkgname = firmware-phicomm-n1
+
