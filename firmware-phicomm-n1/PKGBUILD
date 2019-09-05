@@ -4,7 +4,7 @@ buildarch=28
 
 pkgname=firmware-phicomm-n1
 pkgver=6
-pkgrel=2
+pkgrel=3
 pkgdesc="Additional firmware for Phicomm N1"
 arch=('any')
 url="https://github.com/RPi-Distro"
@@ -22,5 +22,5 @@ sha256sums=('8e2250518bc789e53109728c3c0a6124bc3801a75a1cb4966125753cf1f0252e'
 package() {
   install -d "${pkgdir}/usr/lib/firmware/brcm"
   install -m 0644 *.txt *.clm_blob "${pkgdir}/usr/lib/firmware/brcm"
-  install -m 0644 *.hcd "${pkgdir}/usr/lib/firmware/"
+  install -m 0644 *.hcd "${pkgdir}/usr/lib/firmware/brcm"
 }
