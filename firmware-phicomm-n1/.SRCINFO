@@ -1,7 +1,7 @@
 pkgbase = firmware-phicomm-n1
 	pkgdesc = Additional firmware for Phicomm N1
 	pkgver = 6
-	pkgrel = 4
+	pkgrel = 5
 	url = https://github.com/RPi-Distro
 	arch = any
 	license = custom
