@@ -1,10 +1,11 @@
 pkgbase = firmware-phicomm-n1
 	pkgdesc = Additional firmware for Phicomm N1
 	pkgver = 6
-	pkgrel = 3
+	pkgrel = 4
 	url = https://github.com/RPi-Distro
 	arch = any
 	license = custom
+	conflicts = firmware-raspberrypi
 	options = !strip
 	source = https://raw.githubusercontent.com/RPi-Distro/firmware-nonfree/130cb86fa30cafbd575d38865fa546350d4c5f9c/brcm/brcmfmac43455-sdio.clm_blob
 	source = https://raw.githubusercontent.com/RPi-Distro/firmware-nonfree/130cb86fa30cafbd575d38865fa546350d4c5f9c/brcm/brcmfmac43455-sdio.txt
