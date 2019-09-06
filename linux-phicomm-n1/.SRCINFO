@@ -1,6 +1,6 @@
 pkgbase = linux-phicomm-n1
-	pkgver = 5.2.11
-	pkgrel = 5
+	pkgver = 5.2.12
+	pkgrel = 1
 	url = http://www.kernel.org/
 	arch = aarch64
 	license = GPL2
@@ -16,7 +16,7 @@ pkgbase = linux-phicomm-n1
 	depends = uboot-tools
 	options = !strip
 	source = http://www.kernel.org/pub/linux/kernel/v5.x/linux-5.2.tar.xz
-	source = http://www.kernel.org/pub/linux/kernel/v5.x/patch-5.2.11.xz
+	source = http://www.kernel.org/pub/linux/kernel/v5.x/patch-5.2.12.xz
 	source = meson-gxl-s905d-phicomm-n1.dts
 	source = config
 	source = linux.preset
