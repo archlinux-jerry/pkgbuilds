@@ -5,3 +5,6 @@ timeout:
 extra:
     - update:
         - rm -rf 'src'
+    - failure:
+        - rm -rf 'src_fail'
+        - mv 'src' 'src_fail'
