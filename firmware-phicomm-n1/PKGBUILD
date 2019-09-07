@@ -4,7 +4,7 @@ buildarch=28
 
 pkgname=firmware-phicomm-n1
 pkgver=6
-pkgrel=7
+pkgrel=8
 pkgdesc="Additional firmware for Phicomm N1"
 arch=('any')
 conflicts=('firmware-raspberrypi')
