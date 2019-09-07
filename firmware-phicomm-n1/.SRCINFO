@@ -1,7 +1,7 @@
 pkgbase = firmware-phicomm-n1
 	pkgdesc = Additional firmware for Phicomm N1
 	pkgver = 6
-	pkgrel = 8
+	pkgrel = 9
 	url = https://github.com/RPi-Distro
 	install = firmware-phicomm-n1.install
 	arch = any
