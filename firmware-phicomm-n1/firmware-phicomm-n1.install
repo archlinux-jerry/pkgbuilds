@@ -1,0 +1,19 @@
+post_install() {
+    # get uboot wifi macaddr 
+    tmpfile=$(mktemp -p /tmp)
+    echo '/dev/mmcblk1   0x27400000   0x10000' > $tmpfile
+    mac_wifi=$(fw_printenv -c $tmpfile mac_wifi)
+    rm $tmpfile
+    mac=${mac_wifi#*=}
+    # make sure we have got a correct mac address
+    if ! grep -qiE '([0-9a-f][0-9a-f]:){5}[0-9a-f][0-9a-f]' <<< "$mac"; then
+        # oops! Then we might generate a random one
+        mac=$(sed 's/^.*\(..\)\(..\)\(..\)\(..\)\(..\)\(..\)$/\1:\2:\3:\4:\5:\6/' < /etc/machine-id)
+        grep -qiE '([0-9a-f][0-9a-f]:){5}[0-9a-f][0-9a-f]' <<< "$mac" || exit 1
+    fi
+    sed -i "s/^macaddr=.*$/macaddr=${mac}/g" /usr/lib/firmware/brcm/brcmfmac43455-sdio.phicomm,n1.txt
+}
+
+post_upgrade() {
+    post_install $1
+}
