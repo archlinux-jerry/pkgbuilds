@@ -9,7 +9,7 @@ pkgbase=linux-phicomm-n1-lts-git
 _srcname=Amlogic_s905-kernel
 _kernelname=${pkgbase#linux}
 _desc="AArch64 kernel for Phicomm N1"
-pkgver=4.19.26.g02bf7bdd259a
+pkgver=4.19.74.gd63fb2829240
 pkgrel=1
 arch=('aarch64')
 url="https://github.com/isjerryxiao/Amlogic_s905-kernel"
@@ -41,9 +41,6 @@ prepare() {
 
 build() {
   cd "${srcdir}/${_srcname}"
-
-  # Dirty hack to git rid of the + in kernel version
-  mv .git .git_1
 
   # add pkgrel to extraversion
   sed -ri "s|^(EXTRAVERSION =)(.*)|\1 \2-${pkgrel}|" Makefile

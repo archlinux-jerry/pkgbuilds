@@ -2,3 +2,7 @@ type:
     auto
 timeout:
     720
+extra:
+    - failure:
+        - rm -rf 'src_fail'
+        - mv 'src' 'src_fail'
