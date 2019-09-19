@@ -39,11 +39,12 @@ newPkgVer() {
         return 0
     else
         echo "No new patch level found: ${next}" >&2
-        return 1
+        return 0
     fi
 }
 
 newpkgver=$(newPkgVer)
+[ -z "$newpkgver" ] && exit 0
 sed -i "s/^pkgver=.*\$/pkgver=${newpkgver}/g" $PKGBUILD
 sed -i "s/^pkgrel=.*\$/pkgrel=1/g" $PKGBUILD
 pkgver=$(source $PKGBUILD; echo $pkgver)
