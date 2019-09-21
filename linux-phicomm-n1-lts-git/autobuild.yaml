@@ -3,6 +3,10 @@ type:
 timeout:
     720
 extra:
+    - prebuild:
+        - mv src/Amlogic_s905-kernel/.git mv src/Amlogic_s905-kernel/.git-1
+    - postbuild:
+        - mv src/Amlogic_s905-kernel/.git-1 mv src/Amlogic_s905-kernel/.git
     - failure:
         - rm -rf 'src_fail'
         - mv 'src' 'src_fail'
