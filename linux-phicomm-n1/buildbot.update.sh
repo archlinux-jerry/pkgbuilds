@@ -25,6 +25,7 @@ newPkgVer() {
     html="$(curl -s ${URL})"
 
     next=$PATCH
+    [ $next == 0 ] && next=1
     while true; do
         if grep -Fq "${MAJOR_MINOR}.${next}" <<< "$html"; then
             ((next=next+1))
