@@ -51,6 +51,7 @@ pkgver=$(source $PKGBUILD; echo $pkgver)
 pkgrel=$(source $PKGBUILD; echo $pkgrel)
 [ "$pkgver" != "$newpkgver" ] && echo "unexpected pkgver: ${pkgver}" >&2 && exit 1
 [ "$pkgrel" != '1' ] && echo "unexpected pkgrel: ${pkgrel}" >&2 && exit 1
+updpkgsums
 git add $PKGBUILD
 git commit -m "autoupdate: linux-phicomm-n1 to ${pkgver}"
 git push
