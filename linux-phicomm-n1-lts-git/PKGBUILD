@@ -9,7 +9,7 @@ pkgbase=linux-phicomm-n1-lts-git
 _srcname=Amlogic_s905-kernel
 _kernelname=${pkgbase#linux}
 _desc="AArch64 kernel for Phicomm N1"
-pkgver=4.19.74.gd63fb2829240
+pkgver=4.19.76.gffc1f4d0798f
 pkgrel=1
 arch=('aarch64')
 url="https://github.com/isjerryxiao/Amlogic_s905-kernel"
@@ -18,10 +18,12 @@ makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'git' 'uboot-tools' '
 options=('!strip')
 source=("git+https://github.com/isjerryxiao/Amlogic_s905-kernel.git#branch=linux-4.19.y"
         'config'
+        '0001-disable-scm-version.patch'
         'linux.preset'
         '99-linux.hook')
 md5sums=('SKIP'
          '25a21a791d6dcbd168c9cd41adb1d901'
+         'b8a3b7cc32a8786114e29c41636979fc'
          'f6ee374f560e1b9df6a7de2399027d1b'
          'd1c40c7367a7081f3b4c03264780f9d4')
 
@@ -32,6 +34,9 @@ pkgver() {
 
 prepare() {
   cd "${srcdir}/${_srcname}"
+
+  # disable scm version
+  patch -p1 < "../0001-disable-scm-version.patch"
 
   cat "${srcdir}/config" > ./.config
 
