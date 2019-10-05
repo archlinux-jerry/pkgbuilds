@@ -8,7 +8,7 @@ _srcname=linux-4.19
 _kernelname=${pkgbase#linux}
 _desc="AArch64 kernel for RaspberryPi 3"
 pkgver=4.19.76.r791997.g7a54e45c03bc
-pkgrel=1
+pkgrel=2
 arch=('aarch64')
 url="https://github.com/raspberrypi/linux"
 license=('GPL2')
@@ -17,12 +17,14 @@ options=('!strip')
 source=("${_srcname}::git+https://github.com/raspberrypi/linux.git#branch=rpi-4.19.y"
         'config'
         '0001-disable-scm-version.patch'
+        '0002-bcm2837-spidev.patch'
         'linux.preset'
         '60-linux.hook'
         '90-linux.hook')
 md5sums=('SKIP'
          'e2a36c16f036506f55cd2a211d5808a8'
          'b8a3b7cc32a8786114e29c41636979fc'
+         'e99e54e43761358cab79364a3206994e'
          '41cb5fef62715ead2dd109dbea8413d6'
          'ce6c81ad1ad1f8b333fd6077d47abdaf'
          '3dc88030a8f2f5a5f97266d99b149f77')
@@ -32,6 +34,8 @@ prepare() {
 
   # disable scm version
   patch -p1 < "../0001-disable-scm-version.patch"
+  # enable spidev for bcm2837
+  patch -p1 < "../0002-bcm2837-spidev.patch"
 
   cat "${srcdir}/config" > ./.config
 
