@@ -24,6 +24,7 @@ PATCHES=(
 # prepare upstream source
 prepare() {
     # sed -i "s/^arch=.*$/arch=('aarch64')/g" PKGBUILD
+    true
 }
 
 # which files to include, overrides exclude_files below
