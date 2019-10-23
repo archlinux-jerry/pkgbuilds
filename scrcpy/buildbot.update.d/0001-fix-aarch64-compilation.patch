@@ -1,0 +1,20 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 690e344..81978b4 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -22,8 +22,13 @@ build() {
+     cd "${src_name}"
+ 
+     rm -rf build
+-    meson build --buildtype release --strip -Db_lto=true \
+-        -Dprebuilt_server="../${src_server}"
++    if [[ "$CARCH" != 'aarch64' ]]; then
++        meson build --buildtype release --strip -Db_lto=true \
++            -Dprebuilt_server="../${src_server}"
++    else
++        meson build --buildtype release --strip \
++            -Dprebuilt_server="../${src_server}"
++    fi
+     cd build
+     ninja
+ }
