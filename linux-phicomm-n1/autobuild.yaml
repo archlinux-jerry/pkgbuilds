@@ -7,7 +7,7 @@ priority:
 extra:
     - update:
         - rm -rf 'src'
-        - bash buildbot.update.sh
+        - bash buildbot.update.d/update.sh
     - failure:
         - rm -rf 'src_fail'
         - mv 'src' 'src_fail'

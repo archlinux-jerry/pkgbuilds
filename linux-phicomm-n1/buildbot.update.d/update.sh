@@ -1,8 +1,16 @@
 #!/bin/bash
-# buildbot update hook
+# buildbot update hook for kernel packages
 set -e -o pipefail
 
+assertPkgname() {
+    if [[ "$(basename $(pwd))" != "$PKGNAME" ]]; then
+        echo "Please run this script inside the $PKGNAME dir."
+        exit 1
+    fi
+}
+
 ## This section does essential preparations
+PKGNAME='linux-phicomm-n1' && assertPkgname
 PKGBUILD='PKGBUILD'
 git pull --ff-only
 git checkout $PKGBUILD
@@ -54,5 +62,5 @@ pkgrel=$(source $PKGBUILD; echo $pkgrel)
 [ "$pkgrel" != '1' ] && echo "unexpected pkgrel: ${pkgrel}" >&2 && exit 1
 updpkgsums
 git add $PKGBUILD
-git commit -m "autoupdate: linux-phicomm-n1 to ${pkgver}"
+git commit -m "autoupdate: ${PKGNAME} to ${pkgver}"
 git push
