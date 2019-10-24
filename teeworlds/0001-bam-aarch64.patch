@@ -1,0 +1,11 @@
+--- bam.lua	2019-09-27 09:41:49.233634635 +0800
++++ bam.lua	2019-09-27 09:39:23.690960456 +0800
+@@ -180,6 +180,8 @@
+ 		settings.link.flags:Add("-m64")
+ 	elseif arch == "armv7l" then
+ 		-- arm 32 bit
++	elseif arch == "aarch64" then
++		-- arm 64 bit
+ 	else
+ 		print("Unknown Architecture '" .. arch .. "'. Supported: x86, x86_64")
+ 		os.exit(1)
