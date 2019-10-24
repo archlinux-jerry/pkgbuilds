@@ -2,3 +2,6 @@ type:
     auto
 priority:
     -5
+extra:
+    - update:
+        - rm -rf 'src'
