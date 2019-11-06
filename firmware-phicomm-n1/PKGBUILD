@@ -3,8 +3,8 @@
 buildarch=28
 
 pkgname=firmware-phicomm-n1
-pkgver=6
-pkgrel=9
+pkgver=7
+pkgrel=1
 pkgdesc="Additional firmware for Phicomm N1"
 arch=('any')
 conflicts=('firmware-raspberrypi')
@@ -12,7 +12,7 @@ depends=('wireless-regdb' 'uboot-tools')
 install=${pkgname}.install
 url="https://github.com/RPi-Distro"
 license=('custom')
-_commitid_wl=130cb86fa30cafbd575d38865fa546350d4c5f9c
+_commitid_wl=00daf85ffa373ecce7836df7543c6ebe4cf43639
 _commitid_bt=96eefffcccc725425fd83be5e0704a5c32b79e54
 options=('!strip')
 source=("https://raw.githubusercontent.com/RPi-Distro/firmware-nonfree/$_commitid_wl/brcm/brcmfmac43455-sdio.clm_blob"
