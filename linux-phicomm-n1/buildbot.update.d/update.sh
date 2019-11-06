@@ -22,7 +22,7 @@ newPkgVer() {
 
     URL='https://cdn.kernel.org/pub/linux/kernel/v5.x/'
     VER=$pkgver
-    CHANGELOG_FORMAT="ChangeLog-"
+    CHANGELOG_FORMAT="patch-"
 
     PATCH=${VER##*.}
     MAJOR_MINOR=${VER%.*}
