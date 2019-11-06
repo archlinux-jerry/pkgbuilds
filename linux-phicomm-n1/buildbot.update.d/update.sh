@@ -20,9 +20,11 @@ pkgver=$(source $PKGBUILD; echo $pkgver)
 newPkgVer() {
     # do not print anything to stdout other than new pkgver here
 
-    URL='https://cdn.kernel.org/pub/linux/kernel/v5.x/'
+    #URL='https://cdn.kernel.org/pub/linux/kernel/v5.x/'
+    URL='https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git'
     VER=$pkgver
-    CHANGELOG_FORMAT="patch-"
+    #CHANGELOG_FORMAT="patch-"
+    CHANGELOG_FORMAT="Linux "
 
     PATCH=${VER##*.}
     MAJOR_MINOR=${VER%.*}
@@ -33,9 +35,10 @@ newPkgVer() {
     html="$(curl -s ${URL})"
 
     next=$PATCH
-    [ $next == 0 ] && next=1
+    #[ $next == 0 ] && next=1
+    ((next=next+1))
     while true; do
-        if grep -Fq "${MAJOR_MINOR}.${next}" <<< "$html"; then
+        if grep -Fq "${CHANGELOG_FORMAT}${MAJOR_MINOR}.${next}" <<< "$html"; then
             ((next=next+1))
         else
             ((next=next-1))
