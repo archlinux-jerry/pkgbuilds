@@ -1,7 +1,7 @@
 type:
     auto
 timeout:
-    720
+    1440
 priority:
     5
 extra:
