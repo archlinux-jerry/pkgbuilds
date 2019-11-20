@@ -7,7 +7,7 @@ PKGBUILD='PKGBUILD'
 # prepare upstream source
 prepare() {
     sed -i "s/^arch=.*$/arch=('aarch64')/g" PKGBUILD
-    git apply 0001-fix-aarch64-compilation.patch
+    git apply ../0001-fix-aarch64-compilation.patch
 }
 
 # which files to include, overrides exclude_files below
