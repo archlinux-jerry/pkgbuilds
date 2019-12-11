@@ -1,20 +1,19 @@
-diff --git a/PKGBUILD b/PKGBUILD
-index 690e344..81978b4 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -22,8 +22,13 @@ build() {
-     cd "${src_name}"
- 
-     rm -rf build
--    meson build --buildtype release --strip -Db_lto=true \
--        -Dprebuilt_server="../${src_server}"
-+    if [[ "$CARCH" != 'aarch64' ]]; then
-+        meson build --buildtype release --strip -Db_lto=true \
-+            -Dprebuilt_server="../${src_server}"
-+    else
-+        meson build --buildtype release --strip \
-+            -Dprebuilt_server="../${src_server}"
-+    fi
-     cd build
-     ninja
- }
+@@ -7,7 +7,7 @@
+ arch=('aarch64')
+ url='https://github.com/Genymobile/scrcpy'
+ license=('Apache')
+-depends=('android-tools' 'ffmpeg' 'sdl2')
++depends=('ffmpeg' 'sdl2')
+ makedepends=('meson')
+ optdepends=('android-tools: required if adb is not already installed')
+ source=("https://github.com/Genymobile/scrcpy/archive/v${pkgver}.tar.gz"
+@@ -26,7 +26,6 @@
+         --prefix /usr \
+         --buildtype release \
+         --strip \
+-        -Db_lto=true \
+         -Dprebuilt_server="../scrcpy-server-v${pkgver}" \
+         build
+     ninja -C build
