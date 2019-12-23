@@ -16,8 +16,8 @@ post_upgrade() {
         mac=$(sed 's/^.*\(..\)\(..\)\(..\)\(..\)\(..\)\(..\)$/\1:\2:\3:\4:\5:\6/' < /etc/machine-id)
         grep -qiE '([0-9a-f][0-9a-f]:){5}[0-9a-f][0-9a-f]' <<< "$mac" || exit 1
     fi
-    sed -i "s/^macaddr=.*$/macaddr=${mac}/g" /usr/lib/firmware/brcm/brcmfmac43455-sdio.phicomm,n1.txt
+    sed -i "s/^macaddr=.*$/macaddr=${mac}/g" /usr/lib/firmware/updates/brcm/brcmfmac43455-sdio.phicomm,n1.txt
     # set bluetooth macaddr
     echo -en $(sed 's/^.*:\(..\):\(..\):\(..\)$/\\x\3\\x\2\\x\1/' <<< "$mac") | \
-        dd of=/usr/lib/firmware/brcm/BCM4345C0.hcd bs=1 seek=$((0x21)) count=3 conv=notrunc status=none
+        dd of=/usr/lib/firmware/updates/brcm/BCM4345C0.hcd bs=1 seek=$((0x21)) count=3 conv=notrunc status=none
 }
