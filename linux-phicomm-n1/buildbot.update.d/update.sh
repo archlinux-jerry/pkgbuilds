@@ -21,13 +21,15 @@ newPkgVer() {
     # do not print anything to stdout other than new pkgver here
 
     #URL='https://cdn.kernel.org/pub/linux/kernel/v5.x/'
-    URL='https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git'
+    #URL='https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git'
     VER=$pkgver
     #CHANGELOG_FORMAT="patch-"
     CHANGELOG_FORMAT="Linux "
 
     PATCH=${VER##*.}
     MAJOR_MINOR=${VER%.*}
+
+    URL="https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/?h=linux-${MAJOR_MINOR}.y"
 
     if ! grep -Eq '[0-9].[0-9]' <<< "$MAJOR_MINOR"; then echo "Bad MAJOR_MINOR: ${MAJOR_MINOR}" >&2; return 1; fi
     if ! grep -Eq '[0-9]' <<< "$PATCH"; then echo "Bad PATCH: ${PATCH}" >&2; return 1; fi
