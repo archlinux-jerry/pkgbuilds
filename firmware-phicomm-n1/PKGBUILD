@@ -3,7 +3,7 @@ buildarch=28
 
 pkgname=firmware-phicomm-n1
 pkgver=7
-pkgrel=2
+pkgrel=3
 pkgdesc="Additional firmware for Phicomm N1"
 arch=('any')
 conflicts=('firmware-raspberrypi')
@@ -12,7 +12,7 @@ install=${pkgname}.install
 url="https://github.com/RPi-Distro"
 license=('custom')
 _commitid_wl=00daf85ffa373ecce7836df7543c6ebe4cf43639
-_commitid_bt=96eefffcccc725425fd83be5e0704a5c32b79e54
+_commitid_bt=fff76cb15527c435ce99a9787848eacd6288282c
 options=('!strip')
 source=("https://raw.githubusercontent.com/RPi-Distro/firmware-nonfree/$_commitid_wl/brcm/brcmfmac43455-sdio.clm_blob"
         "https://raw.githubusercontent.com/RPi-Distro/firmware-nonfree/$_commitid_wl/brcm/brcmfmac43455-sdio.txt"
@@ -21,7 +21,7 @@ source=("https://raw.githubusercontent.com/RPi-Distro/firmware-nonfree/$_commiti
 sha256sums=('8e2250518bc789e53109728c3c0a6124bc3801a75a1cb4966125753cf1f0252e'
             'bddee0eff55a11e939e000ad341c951c7ee67758fc26b838b0472792aed33639'
             '0f1817f50649df707f521dec9f2d5905e4c01939c8aabfa9a06b2ce0a36952ee'
-            'd09ce049f65619f007d604069d2b4d2a3ffe3cf897245287ef379955ce3969de')
+            '9a4beeb7ca6d2ed8d6ecdf5ee7b0dac3c6042a702ac232eec812744129bfe640')
 
 package() {
   install -d "${pkgdir}/usr/lib/firmware/updates/brcm"
