@@ -6,7 +6,7 @@ PKGBUILD='PKGBUILD'
 
 # prepare upstream source
 prepare() {
-    true
+    sed -i 's/^\([ \t]*\)po4a/\1\/usr\/bin\/vendor_perl\/po4a/g' PKGBUILD
 }
 
 # which files to include, overrides exclude_files below
