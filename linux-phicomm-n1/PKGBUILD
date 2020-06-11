@@ -49,6 +49,10 @@ prepare() {
   # self-maintained dtb for phicomm-n1
   target_dts="meson-gxl-s905d-phicomm-n1.dts"
   cat "${srcdir}/${target_dts}" > "./arch/arm64/boot/dts/amlogic/${target_dts}"
+  
+  # Disable USB2 LPM. This works around several broken USB2 LPM implementations found in USB3 devices.
+  # https://isolated.site/2019/03/05/several-patches-im-using-for-running-linux-5-0-on-phicomm-n1/
+  sed -i '/snps,dis_u2_susphy_quirk;/a usb2-lpm-disable;' arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
 
   # add pkgrel to extraversion
   sed -ri "s|^(EXTRAVERSION =)(.*)|\1 \2-${pkgrel}|" Makefile
