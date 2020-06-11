@@ -1,0 +1,46 @@
+# Maintainer: Vesa Kaihlavirta <vegai@iki.fi>
+
+pkgname=openttd
+pkgver=1.10.2
+pkgrel=1
+pkgdesc='An engine for running Transport Tycoon Deluxe.'
+arch=('x86_64')
+url='https://www.openttd.org'
+license=('GPL')
+depends=('libpng' 'sdl2' 'icu' 'fontconfig' 'lzo' 'hicolor-icon-theme' 'desktop-file-utils' 'xz' 'fluidsynth')
+optdepends=('openttd-opengfx: free graphics' 
+            'openttd-opensfx: free soundset')
+source=("https://proxy.binaries.openttd.org/openttd-releases/${pkgver}/${pkgname}-${pkgver}-source.tar.xz"
+        "0001-change-network-server.patch")
+sha256sums=('939c55d259fb13cb47dfb3244e8f7b9e2f723883ebb2119410d8a282724eb6f5'
+            '2efcbd86d30f1a4d431734798c3525911733cc42be89f6c1180ff68acfe56e0c')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+  patch -p1 -i ../0001-change-network-server.patch
+}
+
+build() {
+  cd ${pkgname}-${pkgver} 
+
+  # http://site.icu-project.org/download/61#TOC-Migration-Issues
+  CXXFLAGS+=' -DU_USING_ICU_NAMESPACE=1'
+
+ ./configure \
+    --prefix-dir=/usr \
+    --binary-name=${pkgname} \
+    --binary-dir=bin \
+    --data-dir=share/${pkgname} \
+    --install-dir="${pkgdir}" \
+    --doc-dir=share/doc/${pkgname} \
+    --with-fluidsynth \
+    --menu-name="OpenTTD"
+
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver} 
+
+  make install
+}

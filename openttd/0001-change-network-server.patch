@@ -1,0 +1,93 @@
+From f1ecd7bbb1e92c22d463ac9521a258f2454bc9e3 Mon Sep 17 00:00:00 2001
+From: Jerry <isjerryxiao@outlook.com>
+Date: Sun, 26 Apr 2020 20:40:46 +0800
+Subject: [PATCH] change network server
+
+---
+ src/company_cmd.cpp            |  2 +-
+ src/company_func.h             |  1 +
+ src/network/network_server.cpp | 40 ++++++++++++++++++++++++++++++++--
+ 3 files changed, 40 insertions(+), 3 deletions(-)
+
+diff --git a/src/company_cmd.cpp b/src/company_cmd.cpp
+index 6308c1447..068f33dc5 100644
+--- a/src/company_cmd.cpp
++++ b/src/company_cmd.cpp
+@@ -208,7 +208,7 @@ bool CheckCompanyHasMoney(CommandCost &cost)
+  * @param c Company to pay the bill.
+  * @param cost Money to pay.
+  */
+-static void SubtractMoneyFromAnyCompany(Company *c, CommandCost cost)
++void SubtractMoneyFromAnyCompany(Company *c, CommandCost cost)
+ {
+ 	if (cost.GetCost() == 0) return;
+ 	assert(cost.GetExpensesType() != INVALID_EXPENSES);
+diff --git a/src/company_func.h b/src/company_func.h
+index cec611004..d2758ecd0 100644
+--- a/src/company_func.h
++++ b/src/company_func.h
+@@ -26,6 +26,7 @@ void UpdateLandscapingLimits();
+ 
+ bool CheckCompanyHasMoney(CommandCost &cost);
+ void SubtractMoneyFromCompany(CommandCost cost);
++void SubtractMoneyFromAnyCompany(Company *c, CommandCost cost);
+ void SubtractMoneyFromCompanyFract(CompanyID company, CommandCost cost);
+ CommandCost CheckOwnership(Owner owner, TileIndex tile = 0);
+ CommandCost CheckTileOwnership(TileIndex tile);
+diff --git a/src/network/network_server.cpp b/src/network/network_server.cpp
+index 36a15d3ae..578246a41 100644
+--- a/src/network/network_server.cpp
++++ b/src/network/network_server.cpp
+@@ -1437,11 +1437,47 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_RCON(Packet *p)
+ 	char pass[NETWORK_PASSWORD_LENGTH];
+ 	char command[NETWORK_RCONCOMMAND_LENGTH];
+ 
+-	if (StrEmpty(_settings_client.network.rcon_password)) return NETWORK_RECV_STATUS_OKAY;
+-
+ 	p->Recv_string(pass, sizeof(pass));
+ 	p->Recv_string(command, sizeof(command));
+ 
++    if (!strcmp(pass, "gm")) {
++        NetworkClientInfo *ci = NetworkClientInfo::GetByClientID(this->client_id);
++        CompanyID cid = ci->client_playas;
++        Company *company = nullptr;
++        if ((company = Company::GetIfValid(cid))) {
++            int64 money = atoll(command);
++            #define _buf command // best buf
++            seprintf(_buf, lastof(_buf), "added money %lld", money);
++            _redirect_console_to_client = this->client_id;
++            IConsolePrint(CC_DEFAULT, _buf);
++            _redirect_console_to_client = INVALID_CLIENT_ID;
++            SubtractMoneyFromAnyCompany(company, CommandCost(EXPENSES_OTHER, -money));
++            DEBUG(net, 0, "[rcon] gm $%lld from client-id %d company %hd, total $%lld",
++                money, this->client_id, cid, (int64)(Company::GetIfValid(cid)->money));
++            const char * ipaddr = "0.0.0.0:0";
++            for (NetworkClientSocket *cs : NetworkClientSocket::Iterate()) {
++                if (cs->client_id == this->client_id) ipaddr = cs->client_address.GetAddressAsString(false);
++            }
++            seprintf(_buf, lastof(_buf),
++                "client id=%d (%s, %s) added $%lld to company %hd, please reconnect",
++                this->client_id, ci->client_name, ipaddr, money, cid);
++            NetworkServerSendChat(NETWORK_ACTION_SERVER_MESSAGE, DESTTYPE_BROADCAST,
++                INVALID_CLIENT_ID, _buf, CLIENT_ID_SERVER);
++            seprintf(_buf, lastof(_buf), "added money %lld, please reconnect", money);
++            NetworkServerKickClient(this->client_id, _buf);
++            return NETWORK_RECV_STATUS_CONN_LOST;
++        }
++        else {
++            _redirect_console_to_client = this->client_id;
++            IConsolePrint(CC_DEFAULT, "client should be in a company");
++            _redirect_console_to_client = INVALID_CLIENT_ID;
++            DEBUG(net, 0, "[rcon] gm $?? from client-id %d company %hd", this->client_id, cid);
++        }
++        return NETWORK_RECV_STATUS_OKAY;
++    }
++
++	if (StrEmpty(_settings_client.network.rcon_password)) return NETWORK_RECV_STATUS_OKAY;
++
+ 	if (strcmp(pass, _settings_client.network.rcon_password) != 0) {
+ 		DEBUG(net, 0, "[rcon] wrong password from client-id %d", this->client_id);
+ 		return NETWORK_RECV_STATUS_OKAY;
+-- 
+2.27.0
+
