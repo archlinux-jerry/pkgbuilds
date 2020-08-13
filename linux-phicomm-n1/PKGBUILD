@@ -43,7 +43,8 @@ prepare() {
   cat "${srcdir}/config" > ./.config
 
   # Amlogic meson SoC TEXT_OFFSET
-  sed -i "s/TEXT_OFFSET := 0x00080000/TEXT_OFFSET := 0x01080000/g" arch/arm64/Makefile
+  # Linux 5.8, default TEXT_OFFSET was changed to 0x0, use "0x.*" for all kernel versions
+  sed -i "s/TEXT_OFFSET := 0x.*/TEXT_OFFSET := 0x01080000/g" arch/arm64/Makefile
   sed -i "s/#error TEXT_OFFSET must be less than 2MB//g" arch/arm64/kernel/head.S
 
   # self-maintained dtb for phicomm-n1
