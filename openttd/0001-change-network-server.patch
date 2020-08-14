@@ -1,4 +1,4 @@
-From f1ecd7bbb1e92c22d463ac9521a258f2454bc9e3 Mon Sep 17 00:00:00 2001
+From 441bc1d6f41caccd1c5735b119b99f394f5f8847 Mon Sep 17 00:00:00 2001
 From: Jerry <isjerryxiao@outlook.com>
 Date: Sun, 26 Apr 2020 20:40:46 +0800
 Subject: [PATCH] change network server
@@ -35,10 +35,10 @@ index cec611004..d2758ecd0 100644
  CommandCost CheckOwnership(Owner owner, TileIndex tile = 0);
  CommandCost CheckTileOwnership(TileIndex tile);
 diff --git a/src/network/network_server.cpp b/src/network/network_server.cpp
-index 36a15d3ae..578246a41 100644
+index c82c51cfd..24df26d7e 100644
 --- a/src/network/network_server.cpp
 +++ b/src/network/network_server.cpp
-@@ -1437,11 +1437,47 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_RCON(Packet *p)
+@@ -1447,11 +1447,47 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_RCON(Packet *p)
  	char pass[NETWORK_PASSWORD_LENGTH];
  	char command[NETWORK_RCONCOMMAND_LENGTH];
  
@@ -61,9 +61,9 @@ index 36a15d3ae..578246a41 100644
 +            SubtractMoneyFromAnyCompany(company, CommandCost(EXPENSES_OTHER, -money));
 +            DEBUG(net, 0, "[rcon] gm $%lld from client-id %d company %hd, total $%lld",
 +                money, this->client_id, cid, (int64)(Company::GetIfValid(cid)->money));
-+            const char * ipaddr = "0.0.0.0:0";
++            char ipaddr[50] = "0.0.0.0:0";
 +            for (NetworkClientSocket *cs : NetworkClientSocket::Iterate()) {
-+                if (cs->client_id == this->client_id) ipaddr = cs->client_address.GetAddressAsString(false);
++                if (cs->client_id == this->client_id) cs->client_address.GetAddressAsString(ipaddr, lastof(ipaddr), false);
 +            }
 +            seprintf(_buf, lastof(_buf),
 +                "client id=%d (%s, %s) added $%lld to company %hd, please reconnect",
@@ -89,5 +89,5 @@ index 36a15d3ae..578246a41 100644
  		DEBUG(net, 0, "[rcon] wrong password from client-id %d", this->client_id);
  		return NETWORK_RECV_STATUS_OKAY;
 -- 
-2.27.0
+2.28.0
 
