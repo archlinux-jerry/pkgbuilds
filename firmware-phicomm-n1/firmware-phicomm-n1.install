@@ -6,7 +6,9 @@ post_install() {
 post_upgrade() {
     # get uboot wifi macaddr 
     tmpfile=$(mktemp -p /tmp)
-    echo '/dev/mmcblk1   0x27400000   0x10000' > $tmpfile
+    # found in 5.10.1 kernel, mmc device name may be inconsistent across reboots, so we avoid hardcoding
+    mmcdevname=$(lsblk -d | grep -v 'mmcblk.boot' | grep mmcblk | xargs | cut -d ' ' -f1)
+    echo "/dev/${mmcdevname}   0x27400000   0x10000" > $tmpfile
     mac_wifi=$(fw_printenv -c $tmpfile mac_wifi)
     rm $tmpfile
     mac=${mac_wifi#*=}
