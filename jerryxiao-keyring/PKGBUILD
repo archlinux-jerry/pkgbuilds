@@ -3,7 +3,7 @@
 
 pkgname=jerryxiao-keyring
 pkgver=20210327
-pkgrel=1
+pkgrel=2
 pkgdesc='Archlinux-Jerry PGP keyring'
 arch=('any')
 url='https://github.com/archlinux-jerry/archlinux-jerry-keyring'
