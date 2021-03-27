@@ -2,7 +2,7 @@
 # Maintainer: Jerry Xiao <isjerryxiao at outlook dot com>
 
 pkgname=jerryxiao-keyring
-pkgver=20190410
+pkgver=20210327
 pkgrel=1
 pkgdesc='Archlinux-Jerry PGP keyring'
 arch=('any')
