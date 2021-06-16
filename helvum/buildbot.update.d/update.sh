@@ -1,0 +1,1 @@
+../../.buildbot/aur.hook.d/update.sh
