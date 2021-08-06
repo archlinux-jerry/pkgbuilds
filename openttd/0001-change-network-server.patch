@@ -1,6 +1,6 @@
-From 441bc1d6f41caccd1c5735b119b99f394f5f8847 Mon Sep 17 00:00:00 2001
+From ccfdbfbd45518592a9aba969467fc02f80e4de16 Mon Sep 17 00:00:00 2001
 From: Jerry <isjerryxiao@outlook.com>
-Date: Sun, 26 Apr 2020 20:40:46 +0800
+Date: Fri, 6 Aug 2021 09:41:13 +0800
 Subject: [PATCH] change network server
 
 ---
@@ -10,35 +10,35 @@ Subject: [PATCH] change network server
  3 files changed, 40 insertions(+), 3 deletions(-)
 
 diff --git a/src/company_cmd.cpp b/src/company_cmd.cpp
-index 6308c1447..068f33dc5 100644
+index ab9e7e12e..68fc9c9de 100644
 --- a/src/company_cmd.cpp
 +++ b/src/company_cmd.cpp
-@@ -208,7 +208,7 @@ bool CheckCompanyHasMoney(CommandCost &cost)
+@@ -211,7 +211,7 @@ bool CheckCompanyHasMoney(CommandCost &cost)
   * @param c Company to pay the bill.
   * @param cost Money to pay.
   */
--static void SubtractMoneyFromAnyCompany(Company *c, CommandCost cost)
-+void SubtractMoneyFromAnyCompany(Company *c, CommandCost cost)
+-static void SubtractMoneyFromAnyCompany(Company *c, const CommandCost &cost)
++void SubtractMoneyFromAnyCompany(Company *c, const CommandCost &cost)
  {
  	if (cost.GetCost() == 0) return;
  	assert(cost.GetExpensesType() != INVALID_EXPENSES);
 diff --git a/src/company_func.h b/src/company_func.h
-index cec611004..d2758ecd0 100644
+index 01f585910..d55b20e01 100644
 --- a/src/company_func.h
 +++ b/src/company_func.h
-@@ -26,6 +26,7 @@ void UpdateLandscapingLimits();
+@@ -25,6 +25,7 @@ void CompanyAdminBankrupt(CompanyID company_id);
+ void UpdateLandscapingLimits();
  
  bool CheckCompanyHasMoney(CommandCost &cost);
- void SubtractMoneyFromCompany(CommandCost cost);
-+void SubtractMoneyFromAnyCompany(Company *c, CommandCost cost);
- void SubtractMoneyFromCompanyFract(CompanyID company, CommandCost cost);
++void SubtractMoneyFromAnyCompany(Company *c, const CommandCost &cost);
+ void SubtractMoneyFromCompany(const CommandCost& cost);
+ void SubtractMoneyFromCompanyFract(CompanyID company, const CommandCost& cost);
  CommandCost CheckOwnership(Owner owner, TileIndex tile = 0);
- CommandCost CheckTileOwnership(TileIndex tile);
 diff --git a/src/network/network_server.cpp b/src/network/network_server.cpp
-index c82c51cfd..24df26d7e 100644
+index 6660486fe..b20f95543 100644
 --- a/src/network/network_server.cpp
 +++ b/src/network/network_server.cpp
-@@ -1447,11 +1447,47 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_RCON(Packet *p)
+@@ -1483,11 +1483,47 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_RCON(Packet *p)
  	char pass[NETWORK_PASSWORD_LENGTH];
  	char command[NETWORK_RCONCOMMAND_LENGTH];
  
@@ -89,5 +89,5 @@ index c82c51cfd..24df26d7e 100644
  		DEBUG(net, 0, "[rcon] wrong password from client-id %d", this->client_id);
  		return NETWORK_RECV_STATUS_OKAY;
 -- 
-2.28.0
+2.32.0
 
