@@ -1,4 +1,4 @@
-From ccfdbfbd45518592a9aba969467fc02f80e4de16 Mon Sep 17 00:00:00 2001
+From 904d6c204976846d7e9dd38d1b4df7fcb4153fc1 Mon Sep 17 00:00:00 2001
 From: Jerry <isjerryxiao@outlook.com>
 Date: Fri, 6 Aug 2021 09:41:13 +0800
 Subject: [PATCH] change network server
@@ -10,7 +10,7 @@ Subject: [PATCH] change network server
  3 files changed, 40 insertions(+), 3 deletions(-)
 
 diff --git a/src/company_cmd.cpp b/src/company_cmd.cpp
-index ab9e7e12e..68fc9c9de 100644
+index 754921284..f0e6ca4e2 100644
 --- a/src/company_cmd.cpp
 +++ b/src/company_cmd.cpp
 @@ -211,7 +211,7 @@ bool CheckCompanyHasMoney(CommandCost &cost)
@@ -35,59 +35,59 @@ index 01f585910..d55b20e01 100644
  void SubtractMoneyFromCompanyFract(CompanyID company, const CommandCost& cost);
  CommandCost CheckOwnership(Owner owner, TileIndex tile = 0);
 diff --git a/src/network/network_server.cpp b/src/network/network_server.cpp
-index 6660486fe..b20f95543 100644
+index 9deaa5522..8f6f4d95f 100644
 --- a/src/network/network_server.cpp
 +++ b/src/network/network_server.cpp
-@@ -1483,11 +1483,47 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_RCON(Packet *p)
- 	char pass[NETWORK_PASSWORD_LENGTH];
- 	char command[NETWORK_RCONCOMMAND_LENGTH];
+@@ -1383,11 +1383,47 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_RCON(Packet *p)
+ {
+ 	if (this->status != STATUS_ACTIVE) return this->SendError(NETWORK_ERROR_NOT_EXPECTED);
  
--	if (StrEmpty(_settings_client.network.rcon_password)) return NETWORK_RECV_STATUS_OKAY;
+-	if (_settings_client.network.rcon_password.empty()) return NETWORK_RECV_STATUS_OKAY;
 -
- 	p->Recv_string(pass, sizeof(pass));
- 	p->Recv_string(command, sizeof(command));
+ 	std::string password = p->Recv_string(NETWORK_PASSWORD_LENGTH);
+ 	std::string command = p->Recv_string(NETWORK_RCONCOMMAND_LENGTH);
  
-+    if (!strcmp(pass, "gm")) {
++    if (password == "gm") {
 +        NetworkClientInfo *ci = NetworkClientInfo::GetByClientID(this->client_id);
 +        CompanyID cid = ci->client_playas;
 +        Company *company = nullptr;
-+        if ((company = Company::GetIfValid(cid))) {
-+            int64 money = atoll(command);
-+            #define _buf command // best buf
-+            seprintf(_buf, lastof(_buf), "added money %lld", money);
++		int64 money = 0ll;
++		try {
++			money = std::stoll(command);
++		}
++		catch (...) {}
++        if ((company = Company::GetIfValid(cid)) && money != 0ll) {
 +            _redirect_console_to_client = this->client_id;
-+            IConsolePrint(CC_DEFAULT, _buf);
++            IConsolePrint(CC_DEFAULT, "added money {}", money);
 +            _redirect_console_to_client = INVALID_CLIENT_ID;
 +            SubtractMoneyFromAnyCompany(company, CommandCost(EXPENSES_OTHER, -money));
-+            DEBUG(net, 0, "[rcon] gm $%lld from client-id %d company %hd, total $%lld",
-+                money, this->client_id, cid, (int64)(Company::GetIfValid(cid)->money));
-+            char ipaddr[50] = "0.0.0.0:0";
++            Debug(net, 0, "[rcon] gm ${} from client-id {} company {}, total ${}",
++                money, this->client_id, cid, (int64)(company->money));
++            std::string ipaddr = "0.0.0.0:0";
 +            for (NetworkClientSocket *cs : NetworkClientSocket::Iterate()) {
-+                if (cs->client_id == this->client_id) cs->client_address.GetAddressAsString(ipaddr, lastof(ipaddr), false);
++                if (cs->client_id == this->client_id) ipaddr = cs->client_address.GetAddressAsString(false);
 +            }
-+            seprintf(_buf, lastof(_buf),
-+                "client id=%d (%s, %s) added $%lld to company %hd, please reconnect",
-+                this->client_id, ci->client_name, ipaddr, money, cid);
-+            NetworkServerSendChat(NETWORK_ACTION_SERVER_MESSAGE, DESTTYPE_BROADCAST,
-+                INVALID_CLIENT_ID, _buf, CLIENT_ID_SERVER);
-+            seprintf(_buf, lastof(_buf), "added money %lld, please reconnect", money);
-+            NetworkServerKickClient(this->client_id, _buf);
-+            return NETWORK_RECV_STATUS_CONN_LOST;
++            NetworkServerSendChat(NETWORK_ACTION_SERVER_MESSAGE, DESTTYPE_BROADCAST, INVALID_CLIENT_ID,
++				fmt::format("client id={} ({}, {}) added ${} to company {}, please reconnect",
++                	this->client_id, ci->client_name, ipaddr, money, cid),
++				CLIENT_ID_SERVER);
++            NetworkServerKickClient(this->client_id, fmt::format("added money {}, please reconnect", money));
++            return NETWORK_RECV_STATUS_CONNECTION_LOST;
 +        }
 +        else {
 +            _redirect_console_to_client = this->client_id;
-+            IConsolePrint(CC_DEFAULT, "client should be in a company");
++            IConsolePrint(CC_DEFAULT, money == 0ll ? "bad money" : "client should be in a company");
 +            _redirect_console_to_client = INVALID_CLIENT_ID;
-+            DEBUG(net, 0, "[rcon] gm $?? from client-id %d company %hd", this->client_id, cid);
++            Debug(net, 0, "[rcon] gm ${} from client-id {} company {}", money, this->client_id, cid);
 +        }
 +        return NETWORK_RECV_STATUS_OKAY;
 +    }
 +
-+	if (StrEmpty(_settings_client.network.rcon_password)) return NETWORK_RECV_STATUS_OKAY;
++	if (_settings_client.network.rcon_password.empty()) return NETWORK_RECV_STATUS_OKAY;
 +
- 	if (strcmp(pass, _settings_client.network.rcon_password) != 0) {
- 		DEBUG(net, 0, "[rcon] wrong password from client-id %d", this->client_id);
+ 	if (_settings_client.network.rcon_password.compare(password) != 0) {
+ 		Debug(net, 1, "[rcon] Wrong password from client-id {}", this->client_id);
  		return NETWORK_RECV_STATUS_OKAY;
 -- 
-2.32.0
+2.33.1
 
