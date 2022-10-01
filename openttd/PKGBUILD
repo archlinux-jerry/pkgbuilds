@@ -3,8 +3,8 @@
 # Contributor: Vesa Kaihlavirta <vegai@iki.fi>
 
 pkgname=openttd
-pkgver=12.0
-pkgrel=1
+pkgver=12.2
+pkgrel=3
 pkgdesc='Engine for running Transport Tycoon Deluxe'
 arch=(x86_64)
 url='https://www.openttd.org'
@@ -15,7 +15,7 @@ optdepends=('openttd-opengfx: free graphics'
             'openttd-opensfx: free soundset')
 source=("https://cdn.$pkgname.org/$pkgname-releases/$pkgver/$pkgname-$pkgver-source.tar.xz"
         "0001-change-network-server.patch")
-b2sums=('12ffd0978e1f735f4a1d9eb63876a6f4a38867f11e5cbfbb7386f34564ef8b79f394b782c99f28e8a65196b7311aee28427d0485abd2e16dd69f36beb40fa3b1'
+b2sums=('a2c0192a2d4ed149f7c6584032b46483eb74d2d7d2ced16f1d0d3e638c4acef184cd8b013b855a01750dbb570d37bb6ed95f04d16c1580e4b3777ea3b90cfee1'
         '43e8f5dfdf2479caceb3a8e84cd38033404b6f09f5a0040b6b208c9cd22f058b6426a02b15b8be722643f49091c8bb60f2f11497b871b4bf90ea7d2d1ac7ea59')
 
 prepare() {
@@ -34,7 +34,6 @@ build() {
     -G Ninja \
     -S $pkgname-$pkgver
   ninja -C build
-  cd build
 }
 
 package() {
